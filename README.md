@@ -1,13 +1,15 @@
 # Commander Deckbuilder
 
-This is a learning project for [langchain4j](https://docs.langchain4j.dev). 
-It offers an AI-driven commander deck builder for the trading card game [Magic: The Gathering](https://magic.wizards.com).
+This is a learning project for [langchain4j](https://docs.langchain4j.dev).
+It offers an AI-driven commander deck builder for the trading card
+game [Magic: The Gathering](https://magic.wizards.com).
 
 ## Usage
 
 ### Example queries
 
 Rules question → should cite rule numbers from the PDF
+
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
@@ -16,6 +18,7 @@ curl -X POST http://localhost:8080/api/chat \
 ```
 
 Deck building + rules combo
+
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
@@ -24,6 +27,7 @@ curl -X POST http://localhost:8080/api/chat \
 ```
 
 Edge case rules question
+
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
@@ -32,6 +36,7 @@ curl -X POST http://localhost:8080/api/chat \
 ```
 
 ### Testing a multi-turn conversation
+
 ```
 SESSION="my-atraxa-deck"
 
@@ -58,4 +63,28 @@ curl -X POST http://localhost:8080/api/chat \
   -H "Content-Type: application/json" \
   -d "{\"message\": \"Great. Now suggest 5 planeswalkers that synergize with what you already suggested.\", \"sessionId\": \"$SESSION\"}" \
   | jq -r '.reply' | glow -
+```
+
+### Testing structured output
+
+```
+SESSION="atraxa-build-1"
+
+# Step 1: Discuss and refine via chat (Phase 3 memory in action)
+curl -X POST http://localhost:8080/api/chat \
+  -H "Content-Type: application/json" \
+  -d "{\"message\": \"I want Atraxa proliferate, budget around 150 USD, no infinite combos\", \"sessionId\": \"$SESSION\"}" \
+  | jq -r '.reply' | glow -
+
+curl -X POST http://localhost:8080/api/chat \
+  -H "Content-Type: application/json" \
+  -d "{\"message\": \"Focus on +1/+1 counters and planeswalkers. I already own Sol Ring and Doubling Season.\", \"sessionId\": \"$SESSION\"}" \
+  | jq -r '.reply' | glow -
+
+# Step 2: When happy, generate the full structured deck
+# The agent uses the conversation history to respect all the constraints above!
+curl -X POST http://localhost:8080/api/deck \
+  -H "Content-Type: application/json" \
+  -d "{\"message\": \"Build the full deck based on everything we discussed.\", \"sessionId\": \"$SESSION\"}" \
+  | jq .
 ```
