@@ -22,6 +22,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("dev.langchain4j:langchain4j-spring-boot4-starter:$langchain4jVersion")
     implementation("dev.langchain4j:langchain4j-open-ai-spring-boot4-starter:$langchain4jVersion")
+    implementation("dev.langchain4j:langchain4j-document-parser-apache-pdfbox:${langchain4jVersion}")
+    implementation("dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2-q:${langchain4jVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -36,4 +38,8 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

@@ -13,3 +13,10 @@ langchain4j:
 
 scryfall:
   base-url: https://api.scryfall.com
+
+rag:
+  rules-pdf-path: classpath:mtg-rules.pdf
+  max-results: 5          # how many rule chunks to retrieve per query
+  min-score: 0.6          # similarity threshold (0.0 - 1.0)
+  chunk-size: 600         # characters per chunk
+  chunk-overlap: 100      # overlap between chunks

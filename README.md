@@ -5,11 +5,28 @@ It offers an AI-driven commander deck builder for the trading card game [Magic: 
 
 ## Usage
 
-Example query:
+Example queries:
 
+# Rules question → should cite rule numbers from the PDF
 ```
 curl -X POST http://localhost:8080/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "I want to build a Commander deck around Byrke, Long Ear of the Law. What are some good creatures that synergize well? Prefer creatures from the Bloomburrow set."}' \
+-H "Content-Type: application/json" \
+-d '{"message": "Does deathtouch work with trample damage assignment?"}' \
+  | jq -r '.reply' | glow -
+```
+
+# Deck building + rules combo
+```
+curl -X POST http://localhost:8080/api/chat \
+-H "Content-Type: application/json" \
+-d '{"message": "I want to build an Atraxa proliferate deck. What does proliferate actually do exactly according to the rules, and which creatures abuse it best?"}' \
+  | jq -r '.reply' | glow -
+```
+
+# Edge case rules question
+```
+curl -X POST http://localhost:8080/api/chat \
+-H "Content-Type: application/json" \
+-d '{"message": "If I copy a spell with cascade, does the copy also cascade?"}' \
   | jq -r '.reply' | glow -
 ```
