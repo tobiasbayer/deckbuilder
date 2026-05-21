@@ -1,5 +1,6 @@
 package com.deckbuilder.agent
 
+import dev.langchain4j.service.MemoryId
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
 import dev.langchain4j.service.spring.AiService
@@ -34,5 +35,5 @@ interface DeckbuilderAgent {
         Always verify that suggested cards are legal in Commander format.
     """,
     )
-    fun chat(@UserMessage message: String): String
+    fun chat(@MemoryId sessionId: String, @UserMessage message: String): String
 }
