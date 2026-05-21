@@ -5,29 +5,28 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "com"
+group = "com.deckbuilder"
 version = "0.0.1-SNAPSHOT"
-description = "deckbuilder"
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
-    }
-}
 
 repositories {
     mavenCentral()
 }
 
+val langchain4jVersion = "1.15.0-beta25"
+
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("dev.langchain4j:langchain4j-spring-boot-starter:$langchain4jVersion")
+    implementation("dev.langchain4j:langchain4j-open-ai-spring-boot-starter:$langchain4jVersion")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 kotlin {
+    jvmToolchain(24)
+
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
