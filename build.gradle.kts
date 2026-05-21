@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.spring") version "2.2.21"
@@ -18,8 +20,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("dev.langchain4j:langchain4j-spring-boot-starter:$langchain4jVersion")
-    implementation("dev.langchain4j:langchain4j-open-ai-spring-boot-starter:$langchain4jVersion")
+    implementation("dev.langchain4j:langchain4j-spring-boot4-starter:$langchain4jVersion")
+    implementation("dev.langchain4j:langchain4j-open-ai-spring-boot4-starter:$langchain4jVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
