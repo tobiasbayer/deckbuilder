@@ -20,7 +20,7 @@ interface DeckbuilderAgent {
         When suggesting cards, explain WHY each card fits the deck strategy.
         Consider mana curve and synergies.
         
-        Stick to the commander's color identity. Do not suggest cards with other colors.
+        Stick to the commander's color identity. Do not suggest cards with other colors. Colorless is ok.
         
         Always verify that suggested cards are legal in Commander format.
     """,
