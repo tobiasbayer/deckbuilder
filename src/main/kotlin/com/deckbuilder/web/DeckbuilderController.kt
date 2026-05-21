@@ -21,7 +21,7 @@ class DeckbuilderController(private val agent: DeckbuilderAgent) {
         )
     }
 
-    @PostMapping("/deck")
+    @PostMapping("/deck") // TODO after this has been called for the first time, chat() also responds with JSON instead of markdown.
     fun buildDeck(@RequestBody request: ChatRequest): DeckList {
         return agent.buildDeck(
             sessionId = request.sessionId,

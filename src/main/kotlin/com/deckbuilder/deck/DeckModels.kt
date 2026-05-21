@@ -67,4 +67,7 @@ data class DeckList(
 
     @Description("Potential upgrades to consider if the player has more budget")
     val upgradeTargets: List<String>,
+
+    @Description("Approximate deck price in USD, e.g. '$136.50'. Calculated by summing up all estimated single card prices in the deck.")
+    val estimatedPrice: String,
 )
