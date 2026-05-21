@@ -13,7 +13,7 @@ Rules question → should cite rule numbers from the PDF
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
--d '{"message": "Does deathtouch work with trample damage assignment?"}' \
+-d '{"message": "Does deathtouch work with trample damage assignment?", "sessionId": "$SESSION"}' \
   | jq -r '.reply' | glow -
 ```
 
@@ -22,7 +22,7 @@ Deck building + rules combo
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
--d '{"message": "I want to build an Atraxa proliferate deck. What does proliferate actually do exactly according to the rules, and which creatures abuse it best?"}' \
+-d '{"message": "I want to build an Atraxa proliferate deck. What does proliferate actually do exactly according to the rules, and which creatures abuse it best?", "sessionId": "$SESSION"}' \
   | jq -r '.reply' | glow -
 ```
 
@@ -31,7 +31,7 @@ Edge case rules question
 ```
 curl -X POST http://localhost:8080/api/chat \
 -H "Content-Type: application/json" \
--d '{"message": "If I copy a spell with cascade, does the copy also cascade?"}' \
+-d '{"message": "If I copy a spell with cascade, does the copy also cascade?", "sessionId": "$SESSION"}' \
   | jq -r '.reply' | glow -
 ```
 
