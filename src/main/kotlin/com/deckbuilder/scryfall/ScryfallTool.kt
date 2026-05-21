@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component
 @Component
 class ScryfallTool(private val scryfallClient: ScryfallClient) {
 
+    // TODO should we inject the complete scryfall query syntax guide into this prompt?
+    // https://www.reddit.com/r/magicTCG/comments/eytjhw/scryfall_search_primer_a_guide_for_people_who/
+    // Or rather use RAG?
     @Tool(
         """
         Search for Magic: The Gathering cards on Scryfall.
