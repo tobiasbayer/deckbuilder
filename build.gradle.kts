@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
-
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.spring") version "2.2.21"
@@ -26,6 +24,9 @@ dependencies {
     implementation("dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2-q:${langchain4jVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.14.9")
+    testImplementation("com.ninja-squad:springmockk:5.0.1")
+    testImplementation("org.wiremock:wiremock-standalone:3.13.2")
 }
 
 kotlin {
@@ -38,8 +39,29 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("--enable-native-access=ALL-UNNAMED", "-XX:+EnableDynamicAgentLoading")
 }
 
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     jvmArgs("--enable-native-access=ALL-UNNAMED")
+}
+
+tasks.test {
+    useJUnitPlatform {
+        excludeTags("token-burning")
+    }
+}
+
+tasks.register<Test>("tokenBurningTest") {
+    description = "Runs integration tests against real OpenAI."
+    group = "verification"
+
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+
+    useJUnitPlatform {
+        includeTags("token-burning")
+    }
+
+    shouldRunAfter("test")
 }
