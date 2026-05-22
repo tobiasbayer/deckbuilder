@@ -26,4 +26,15 @@ data class ScryfallCard(
     val rarity: String = "",
     val set: String = "",
     @JsonProperty("scryfall_uri") val scryfallUri: String = "",
+    val prices: ScryfallPrices? = null,
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class ScryfallPrices(
+    val usd: String? = null,
+    @JsonProperty("usd_foil")
+    val usdFoil: String? = null,
+    val eur: String? = null,
+    @JsonProperty("eur_foil")
+    val eurFoil: String? = null,
 )

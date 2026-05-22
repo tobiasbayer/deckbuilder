@@ -65,6 +65,7 @@ class ScryfallTool(private val scryfallClient: ScryfallClient) {
             appendLine("CMC: ${card.cmc.toInt()} | Rarity: ${card.rarity}")
             appendLine("Commander legal: ${card.legalities["commander"] == "legal"}")
             appendLine("Scryfall: ${card.scryfallUri}")
+            card.prices?.usd?.let { appendLine("Price (TCGPlayer): $$it") }
         }
     }
 }
