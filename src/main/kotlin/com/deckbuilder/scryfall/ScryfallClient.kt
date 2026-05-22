@@ -15,7 +15,7 @@ class ScryfallClient(
     private val client = RestClient.builder()
         .baseUrl(baseUrl)
         .defaultHeader("User-Agent", "DeckBuilder/1.0")
-        .defaultHeader("Accept", "*/*")
+        .defaultHeader("Accept", "application/json")
         .build()
 
     fun searchCards(query: String, maxResults: Int = 10): List<ScryfallCard> {

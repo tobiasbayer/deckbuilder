@@ -8,15 +8,12 @@ import org.springframework.stereotype.Component
 class ScryfallTool(private val scryfallClient: ScryfallClient) {
 
     // TODO should we inject the complete scryfall query syntax guide into this prompt?
-    // https://www.reddit.com/r/magicTCG/comments/eytjhw/scryfall_search_primer_a_guide_for_people_who/
     // Or rather use RAG?
     @Tool(
         """
         Search for Magic: The Gathering cards on Scryfall.
-        Use Scryfall query syntax, for example:
-          - "commander:legal type:creature color:green cmc<=3" for green creatures legal in commander with a mana value equal to or less than 3
-          - "t:artifact o:draw" for artifacts with draw effects
-          - "format:commander is:commander" to find valid commanders
+        Use Scryfall query syntax. You can find the specification here: https://scryfall.com/docs/syntax
+        When searching for cards always add "commander:legal".
         Returns a list of matching cards with their details.
         Always call this when you need to find specific cards!
     """,
