@@ -22,6 +22,7 @@ dependencies {
     implementation("dev.langchain4j:langchain4j-open-ai-spring-boot4-starter:$langchain4jVersion")
     implementation("dev.langchain4j:langchain4j-document-parser-apache-pdfbox:${langchain4jVersion}")
     implementation("dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2-q:${langchain4jVersion}")
+    implementation("dev.langchain4j:langchain4j-ollama-spring-boot-starter:${langchain4jVersion}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.14.9")
