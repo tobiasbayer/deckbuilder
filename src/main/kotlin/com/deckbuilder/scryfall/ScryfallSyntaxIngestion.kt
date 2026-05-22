@@ -1,7 +1,7 @@
-package com.deckbuilder.rules
+package com.deckbuilder.scryfall
 
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader
-import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser
+import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser
 import dev.langchain4j.data.document.splitter.DocumentSplitters
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.model.embedding.EmbeddingModel
@@ -14,12 +14,13 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 @Service
-class RulesIngestion(
+class ScryfallSyntaxIngestion(
     private val embeddingStore: EmbeddingStore<TextSegment>,
     private val embeddingModel: EmbeddingModel,
-    @Value("\${rag.rules-pdf-path}") private val rulesPdf: Resource,
+    @Value("\${rag.scryfall-syntax-path}") private val syntaxHtml: Resource,
     @Value("\${rag.chunk-size:600}") private val chunkSize: Int,
     @Value("\${rag.chunk-overlap:100}") private val chunkOverlap: Int,
 ) : ApplicationRunner {
@@ -27,26 +28,17 @@ class RulesIngestion(
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun run(args: ApplicationArguments) {
-        log.info("Starting MTG rules ingestion...")
+        log.info("Starting Scryfall syntax ingestion...")
         val startTime = System.currentTimeMillis()
 
-        val tempFile = Files.createTempFile("mtg-rules", ".pdf").also {
-            rulesPdf.inputStream.use { input ->
-                Files.copy(
-                    input,
-                    it,
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING,
-                )
+        val tempFile = Files.createTempFile("scryfall-syntax", ".html").also {
+            syntaxHtml.inputStream.use { input ->
+                Files.copy(input, it, StandardCopyOption.REPLACE_EXISTING)
             }
         }
 
-        val document = FileSystemDocumentLoader.loadDocument(
-            tempFile,
-            ApachePdfBoxDocumentParser(),
-        )
-        log.info("Loaded PDF: ${document.text().length} characters")
-
-        val elapsed = System.currentTimeMillis() - startTime
+        val document = FileSystemDocumentLoader.loadDocument(tempFile, ApacheTikaDocumentParser())
+        log.info("Parsed HTML: ${document.text().length} characters")
 
         val ingestor = EmbeddingStoreIngestor.builder()
             .documentSplitter(DocumentSplitters.recursive(chunkSize, chunkOverlap))
@@ -55,7 +47,8 @@ class RulesIngestion(
             .build()
 
         val result = ingestor.ingest(document)
-        log.info("Rules ingestion complete: ${result.tokenUsage()} in ${elapsed}ms")
+        val elapsed = System.currentTimeMillis() - startTime
+        log.info("Scryfall syntax ingestion complete: ${result.tokenUsage()} in ${elapsed}ms")
 
         Files.deleteIfExists(tempFile)
     }

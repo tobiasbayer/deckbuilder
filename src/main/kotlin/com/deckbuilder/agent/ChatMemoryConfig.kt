@@ -1,5 +1,6 @@
-package com.deckbuilder.chat
+package com.deckbuilder.agent
 
+import dev.langchain4j.memory.chat.ChatMemoryProvider
 import dev.langchain4j.memory.chat.MessageWindowChatMemory
 import dev.langchain4j.store.memory.chat.InMemoryChatMemoryStore
 import org.springframework.context.annotation.Bean
@@ -17,10 +18,10 @@ class ChatMemoryConfig {
      * LangChain4j calls this automatically when the agent method has @MemoryId.
      */
     @Bean
-    fun chatMemoryProvider(): dev.langchain4j.memory.chat.ChatMemoryProvider {
+    fun chatMemoryProvider(): ChatMemoryProvider {
         val store = InMemoryChatMemoryStore()
 
-        return dev.langchain4j.memory.chat.ChatMemoryProvider { memoryId ->
+        return ChatMemoryProvider { memoryId ->
             MessageWindowChatMemory.builder()
                 .id(memoryId)
                 .maxMessages(20)      // keep last 20 messages per session

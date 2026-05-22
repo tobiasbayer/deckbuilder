@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component
 @Component
 class ScryfallTool(private val scryfallClient: ScryfallClient) {
 
-    // TODO should we inject the complete scryfall query syntax guide into this prompt?
-    // Or rather use RAG?
     @Tool(
         """
         Search for Magic: The Gathering cards on Scryfall.
-        Use Scryfall query syntax. You can find the specification here: https://scryfall.com/docs/syntax
+        Use Scryfall query syntax. You can find the Scryfall query syntax specification in your context.
         When searching for cards always add "commander:legal".
         Returns a list of matching cards with their details.
         Always call this when you need to find specific cards!

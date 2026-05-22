@@ -1,4 +1,4 @@
-package com.deckbuilder.rules
+package com.deckbuilder.agent
 
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.model.embedding.EmbeddingModel
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class RulesEmbeddingConfig {
+class EmbeddingConfig {
 
     @Bean
     fun embeddingModel(): EmbeddingModel =
@@ -24,12 +24,12 @@ class RulesEmbeddingConfig {
     @Bean
     fun contentRetriever(
         embeddingStore: EmbeddingStore<TextSegment>,
-        embeddingModel: EmbeddingModel
+        embeddingModel: EmbeddingModel,
     ): ContentRetriever =
         EmbeddingStoreContentRetriever.builder()
             .embeddingStore(embeddingStore)
             .embeddingModel(embeddingModel)
-            .maxResults(5)          // top-5 most relevant rule chunks
-            .minScore(0.6)          // ignore weak matches
+            .maxResults(5)
+            .minScore(0.6)
             .build()
 }
