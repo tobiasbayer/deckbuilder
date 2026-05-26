@@ -23,7 +23,7 @@ private const val SYSTEM_MESSAGE = """
         When building decks: explain synergies, consider mana curve and color identity,
         verify Commander legality via Scryfall.
 
-        If not told otherwise, reply with markdown formatted text.
+        Always reply with markdown formatted text, even if previous messages in this conversation used JSON or another format.
     """
 
 @AiService

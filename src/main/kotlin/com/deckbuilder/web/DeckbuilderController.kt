@@ -38,7 +38,7 @@ class DeckbuilderController(private val agent: DeckbuilderAgent) {
         return emitter
     }
 
-    @PostMapping("/deck") // TODO after this has been called for the first time, chat() also responds with JSON instead of markdown.
+    @PostMapping("/deck")
     fun buildDeck(@RequestBody request: ChatRequest): DeckList {
         BudgetContext.set(request.maxBudgetUsd)
         try {
