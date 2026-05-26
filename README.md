@@ -99,3 +99,9 @@ curl -X POST http://localhost:8080/api/chat \
   -d "{\"message\": \"What's the best pizza recipe?\", \"sessionId\": \"$SESSION\"}" \
   | jq -r '.reply' | glow -
 ```
+
+### Testing the streaming endpoint
+
+```
+curl -N -X GET "http://localhost:8080/api/chat/stream?sessionId=s1&message=Suggest+cards+with+the+ramp+function+for+Atraxa" 
+```

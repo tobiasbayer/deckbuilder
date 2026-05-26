@@ -6,17 +6,13 @@ import com.deckbuilder.guardrails.BudgetOutputGuard
 import com.deckbuilder.guardrails.MtgTopicInputGuard
 import dev.langchain4j.service.MemoryId
 import dev.langchain4j.service.SystemMessage
+import dev.langchain4j.service.TokenStream
 import dev.langchain4j.service.UserMessage
 import dev.langchain4j.service.guardrail.InputGuardrails
 import dev.langchain4j.service.guardrail.OutputGuardrails
 import dev.langchain4j.service.spring.AiService
 
-@AiService
-@InputGuardrails(MtgTopicInputGuard::class, BudgetExtractorInputGuard::class)
-interface DeckbuilderAgent {
-
-    @SystemMessage(
-        """
+private const val SYSTEM_MESSAGE = """
         You are an expert Magic: The Gathering Commander deck builder and rules judge.
 
         You have access to:
@@ -26,11 +22,19 @@ interface DeckbuilderAgent {
 
         When building decks: explain synergies, consider mana curve and color identity,
         verify Commander legality via Scryfall.
-        
+
         If not told otherwise, reply with markdown formatted text.
-    """,
-    )
+    """
+
+@AiService
+@InputGuardrails(MtgTopicInputGuard::class, BudgetExtractorInputGuard::class)
+interface DeckbuilderAgent {
+
+    @SystemMessage(SYSTEM_MESSAGE)
     fun chat(@MemoryId sessionId: String, @UserMessage message: String): String
+
+    @SystemMessage(SYSTEM_MESSAGE)
+    fun streamChat(@MemoryId sessionId: String, @UserMessage message: String): TokenStream
 
     @SystemMessage(
         """
