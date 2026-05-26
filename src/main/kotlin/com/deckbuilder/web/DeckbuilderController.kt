@@ -3,13 +3,17 @@ package com.deckbuilder.web
 import com.deckbuilder.agent.DeckbuilderAgent
 import com.deckbuilder.deck.DeckList
 import com.deckbuilder.guardrails.BudgetContext
+import dev.langchain4j.store.memory.chat.ChatMemoryStore
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
 @RestController
 @RequestMapping("/api")
-class DeckbuilderController(private val agent: DeckbuilderAgent) {
+class DeckbuilderController(
+    private val agent: DeckbuilderAgent,
+    private val chatMemoryStore: ChatMemoryStore,
+) {
 
     @PostMapping("/chat")
     fun chat(@RequestBody request: ChatRequest): ChatResponse {
@@ -41,12 +45,17 @@ class DeckbuilderController(private val agent: DeckbuilderAgent) {
     @PostMapping("/deck")
     fun buildDeck(@RequestBody request: ChatRequest): DeckList {
         BudgetContext.set(request.maxBudgetUsd)
+        // Take a snapshot of the chat memory and replay it after the deck was built.
+        // This avoids priming the model with the huge JSON blob causing subsequent calls
+        // to chat() to return JSON instead of markdown.
+        val snapshot = chatMemoryStore.getMessages(request.sessionId)
         try {
             return agent.buildDeck(
                 sessionId = request.sessionId,
                 message = request.message,
             )
         } finally {
+            chatMemoryStore.updateMessages(request.sessionId, snapshot)
             BudgetContext.clear()
         }
     }
