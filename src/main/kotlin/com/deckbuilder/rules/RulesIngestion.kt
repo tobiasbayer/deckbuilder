@@ -19,7 +19,7 @@ import java.nio.file.Files
 class RulesIngestion(
     private val embeddingStore: EmbeddingStore<TextSegment>,
     private val embeddingModel: EmbeddingModel,
-    @Value("\${rag.rules-pdf-path}") private val rulesPdf: Resource,
+    @Value("\${rag.rules-pdf-location}") private val rulesPdf: Resource,
     @Value("\${rag.chunk-size:600}") private val chunkSize: Int,
     @Value("\${rag.chunk-overlap:100}") private val chunkOverlap: Int,
 ) : ApplicationRunner {

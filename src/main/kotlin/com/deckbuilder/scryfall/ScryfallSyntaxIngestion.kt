@@ -20,7 +20,7 @@ import java.nio.file.StandardCopyOption
 class ScryfallSyntaxIngestion(
     private val embeddingStore: EmbeddingStore<TextSegment>,
     private val embeddingModel: EmbeddingModel,
-    @Value("\${rag.scryfall-syntax-path}") private val syntaxHtml: Resource,
+    @Value("\${rag.scryfall-syntax-location}") private val syntaxHtml: Resource,
     @Value("\${rag.chunk-size:600}") private val chunkSize: Int,
     @Value("\${rag.chunk-overlap:100}") private val chunkOverlap: Int,
 ) : ApplicationRunner {

@@ -8,8 +8,8 @@ scryfall:
   base-url: https://api.scryfall.com
 
 rag:
-  rules-pdf-path: classpath:mtg-rules.pdf
-  scryfall-syntax-path: classpath:scryfall-syntax.html
+  rules-pdf-location: https://media.wizards.com/2026/downloads/MagicCompRules%2020260417.pdf
+  scryfall-syntax-location: https://scryfall.com/docs/syntax
   max-results: 5
   min-score: 0.6
   chunk-size: 600
