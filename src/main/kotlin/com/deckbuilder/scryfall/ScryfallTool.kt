@@ -18,9 +18,9 @@ class ScryfallTool(private val scryfallClient: ScryfallClient) {
     )
     fun searchCards(
         @P("Scryfall search query") query: String,
-        @P("Maximum number of results, default 10") maxResults: Int = 10,
+        @P("Maximum number of results, default 10") maxResults: Int? = null,
     ): String {
-        val cards = scryfallClient.searchCards(query, maxResults)
+        val cards = scryfallClient.searchCards(query, maxResults ?: 10)
 
         if (cards.isEmpty()) return "No cards found for query: $query"
 
