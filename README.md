@@ -88,3 +88,14 @@ curl -X POST http://localhost:8080/api/deck \
   -d "{\"message\": \"Build the full deck based on everything we discussed.\", \"sessionId\": \"$SESSION\"}" \
   | jq .
 ```
+
+### Testing guardrails
+
+```
+SESSION="pizza"
+
+curl -X POST http://localhost:8080/api/chat \
+  -H "Content-Type: application/json" \
+  -d "{\"message\": \"What's the best pizza recipe?\", \"sessionId\": \"$SESSION\"}" \
+  | jq -r '.reply' | glow -
+```

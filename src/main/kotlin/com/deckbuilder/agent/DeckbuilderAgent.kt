@@ -1,12 +1,18 @@
 package com.deckbuilder.agent
 
 import com.deckbuilder.deck.DeckList
+import com.deckbuilder.guardrails.BudgetExtractorInputGuard
+import com.deckbuilder.guardrails.BudgetOutputGuard
+import com.deckbuilder.guardrails.MtgTopicInputGuard
 import dev.langchain4j.service.MemoryId
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
+import dev.langchain4j.service.guardrail.InputGuardrails
+import dev.langchain4j.service.guardrail.OutputGuardrails
 import dev.langchain4j.service.spring.AiService
 
 @AiService
+@InputGuardrails(MtgTopicInputGuard::class, BudgetExtractorInputGuard::class)
 interface DeckbuilderAgent {
 
     @SystemMessage(
@@ -46,5 +52,6 @@ interface DeckbuilderAgent {
         Return a complete, well-rounded deck — not just staples.
     """,
     )
+    @OutputGuardrails(BudgetOutputGuard::class)
     fun buildDeck(@MemoryId sessionId: String, @UserMessage message: String): DeckList
 }
