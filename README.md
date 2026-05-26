@@ -4,9 +4,17 @@ This is a learning project for [langchain4j](https://docs.langchain4j.dev).
 It offers an AI-driven commander deck builder for the trading card
 game [Magic: The Gathering](https://magic.wizards.com).
 
-## Usage
+## Running the service
+```
+./gradlew bootRun
+```
 
 When using the OpenAI provider, make sure to set your OpenAI API key before running the service (`export OPENAI_API_KEY=sk-...`).
+
+You can switch providers in `application.yml` and configure them in `application-openai.yml` and `application-ollama.yml`.
+
+## Usage
+
 
 ### Example queries
 
