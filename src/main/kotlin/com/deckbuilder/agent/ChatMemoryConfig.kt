@@ -24,8 +24,9 @@ class ChatMemoryConfig {
         return ChatMemoryProvider { memoryId ->
             MessageWindowChatMemory.builder()
                 .id(memoryId)
-                .maxMessages(20)      // keep last 20 messages per session
+                .maxMessages(20) // keep last 20 messages per session
                 .chatMemoryStore(store)
+                .alwaysKeepSystemMessageFirst(true)
                 .build()
         }
     }
