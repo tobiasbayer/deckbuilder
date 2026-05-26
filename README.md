@@ -54,7 +54,7 @@ curl -N -X GET "http://localhost:8080/api/chat/stream?sessionId=s1&message=Sugge
 ### Testing a multi-turn conversation
 
 ```
-SESSION="atraxa-build-1"
+export SESSION="atraxa-build-1"
 
 # Step 1: Start the deck
 curl -X POST http://localhost:8080/api/chat \
@@ -84,7 +84,7 @@ curl -X POST http://localhost:8080/api/chat \
 ### Testing structured output
 
 ```
-SESSION="atraxa-build-2"
+export SESSION="atraxa-build-2"
 
 # Step 1: Discuss and refine via chat
 curl -X POST http://localhost:8080/api/chat \
@@ -108,7 +108,7 @@ curl -X POST http://localhost:8080/api/deck \
 ### Testing guardrails
 
 ```
-SESSION="pizza"
+export SESSION="pizza"
 
 curl -X POST http://localhost:8080/api/chat \
   -H "Content-Type: application/json" \
