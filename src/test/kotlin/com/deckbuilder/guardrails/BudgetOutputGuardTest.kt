@@ -1,5 +1,6 @@
 package com.deckbuilder.guardrails
 
+import dev.langchain4j.agent.tool.ToolExecutionRequest
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.guardrail.OutputGuardrailResult
 import org.assertj.core.api.Assertions.assertThat
@@ -60,6 +61,15 @@ class BudgetOutputGuardTest {
     fun `passes when response is not valid JSON`() {
         BudgetContext.set(100)
         val result = guard.validate(AiMessage("Here is your deck suggestion..."))
+        assertThat(result.isSuccess).isTrue()
+    }
+
+    @Test
+    fun `passes when AiMessage has no text (tool-call-only message)`() {
+        BudgetContext.set(100)
+        val toolCall = ToolExecutionRequest.builder()
+            .id("call_1").name("searchCards").arguments("{}").build()
+        val result = guard.validate(AiMessage.from(toolCall))
         assertThat(result.isSuccess).isTrue()
     }
 

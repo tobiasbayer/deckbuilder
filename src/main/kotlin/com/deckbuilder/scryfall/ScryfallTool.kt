@@ -19,23 +19,8 @@ class ScryfallTool(private val scryfallClient: ScryfallClient) {
     fun searchCards(
         @P("Scryfall search query") query: String,
         @P("Maximum number of results, default 10") maxResults: Int? = null,
-    ): String {
-        val cards = scryfallClient.searchCards(query, maxResults ?: 10)
-
-        if (cards.isEmpty()) return "No cards found for query: $query"
-
-        return cards.joinToString("\n---\n") { card ->
-            buildString {
-                appendLine("**${card.name}**")
-                card.manaCost?.let { appendLine("Mana Cost: $it") }
-                appendLine("Type: ${card.typeLine}")
-                card.oracleText?.let { appendLine("Text: $it") }
-                if (card.power != null) appendLine("P/T: ${card.power}/${card.toughness}")
-                card.loyalty?.let { appendLine("Loyalty: $it") }
-                appendLine("CMC: ${card.cmc.toInt()} | Rarity: ${card.rarity}")
-                appendLine("Commander legal: ${card.legalities["commander"] == "legal"}")
-            }
-        }
+    ): List<ScryfallCard> {
+        return scryfallClient.searchCards(query, maxResults ?: 10)
     }
 
     @Tool(
@@ -46,21 +31,7 @@ class ScryfallTool(private val scryfallClient: ScryfallClient) {
     )
     fun getCardDetails(
         @P("The exact card name") cardName: String,
-    ): String {
-        val card = scryfallClient.getCardByName(cardName)
-            ?: return "Card not found: $cardName"
-
-        return buildString {
-            appendLine("**${card.name}**")
-            card.manaCost?.let { appendLine("Mana Cost: $it") }
-            appendLine("Type: ${card.typeLine}")
-            card.oracleText?.let { appendLine("Text: $it") }
-            if (card.power != null) appendLine("P/T: ${card.power}/${card.toughness}")
-            appendLine("Color Identity: ${card.colorIdentity.joinToString(", ")}")
-            appendLine("CMC: ${card.cmc.toInt()} | Rarity: ${card.rarity}")
-            appendLine("Commander legal: ${card.legalities["commander"] == "legal"}")
-            appendLine("Scryfall: ${card.scryfallUri}")
-            card.prices?.usd?.let { appendLine("Price (TCGPlayer): $$it") }
-        }
+    ): ScryfallCard? {
+        return scryfallClient.getCardByName(cardName)
     }
 }

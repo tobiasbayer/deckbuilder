@@ -15,7 +15,8 @@ class BudgetOutputGuard : OutputGuardrail {
     override fun validate(responseFromLLM: AiMessage): OutputGuardrailResult {
         val maxBudget = BudgetContext.get() ?: return success()
 
-        val estimatedPrice = parseEstimatedPrice(responseFromLLM.text()) ?: return success()
+        val text = responseFromLLM.text() ?: return success()
+        val estimatedPrice = parseEstimatedPrice(text) ?: return success()
 
         return if (estimatedPrice > maxBudget) {
             reprompt(
