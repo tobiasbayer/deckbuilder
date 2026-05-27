@@ -11,7 +11,7 @@ class ScryfallTool(private val scryfallClient: ScryfallClient) {
         """
         Search for Magic: The Gathering cards on Scryfall.
         Use Scryfall query syntax. You can find the Scryfall query syntax specification in your context.
-        When searching for cards always add "commander:legal".
+        When searching for cards always add "format:commander".
         Returns a list of matching cards with their details.
         Always call this when you need to find specific cards!
     """,
