@@ -97,6 +97,45 @@ class ScryfallClientTest {
     }
 
     @Test
+    fun `searchCards parses double-faced cards that omit top-level colors`() {
+        wireMock.stubFor(
+            get(urlPathEqualTo("/cards/search"))
+                .willReturn(
+                    okJson(
+                        """
+                        {
+                          "data": [
+                            {
+                              "name": "Sorin of House Markov // Sorin, Ravenous Neonate",
+                              "type_line": "Legendary Creature — Human Noble // Legendary Planeswalker — Sorin",
+                              "cmc": 2.0,
+                              "color_identity": ["B","W"],
+                              "rarity": "mythic",
+                              "set": "mh3",
+                              "legalities": {"commander": "legal"},
+                              "scryfall_uri": "https://scryfall.com/card/mh3/245"
+                            }
+                          ],
+                          "total_cards": 1,
+                          "has_more": false
+                        }
+                        """.trimIndent()
+                    )
+                )
+        )
+
+        val cards = client.searchCards("sorin dfc", maxResults = 5)
+
+        assertThat(cards).hasSize(1)
+        with(cards.first()) {
+            assertThat(name).startsWith("Sorin of House Markov")
+            assertThat(colors).isEmpty()
+            assertThat(manaCost).isNull()
+            assertThat(oracleText).isNull()
+        }
+    }
+
+    @Test
     fun `searchCards respects maxResults limit`() {
         // Scryfall returns 3 cards but we ask for 2
         val threeCards = (1..3).map { i ->

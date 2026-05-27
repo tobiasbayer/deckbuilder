@@ -1,7 +1,6 @@
 package com.deckbuilder.guardrails
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.guardrail.OutputGuardrail
 import dev.langchain4j.guardrail.OutputGuardrailResult
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class BudgetOutputGuard : OutputGuardrail {
 
-    private val objectMapper = ObjectMapper().registerKotlinModule()
+    private val objectMapper = jacksonObjectMapper()
 
     override fun validate(responseFromLLM: AiMessage): OutputGuardrailResult {
         val maxBudget = BudgetContext.get() ?: return success()
@@ -33,7 +32,7 @@ class BudgetOutputGuard : OutputGuardrail {
 
     private fun parseEstimatedPrice(json: String): Double? = runCatching {
         val node = objectMapper.readTree(json)
-        val raw = node.get("estimatedPrice")?.asText() ?: return null
+        val raw = node.get("estimatedPrice")?.asString() ?: return null
         raw.replace("$", "").replace(",", "").trim().toDouble()
     }.getOrNull()
 }

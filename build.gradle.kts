@@ -16,6 +16,7 @@ val langchain4jVersion = "1.15.0-beta25"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("dev.langchain4j:langchain4j-spring-boot4-starter:$langchain4jVersion")

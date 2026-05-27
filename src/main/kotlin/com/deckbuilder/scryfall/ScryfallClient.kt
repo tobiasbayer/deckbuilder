@@ -27,7 +27,7 @@ class ScryfallClient(
                 .body<ScryfallSearchResponse>()
             response?.data?.take(maxResults) ?: emptyList()
         } catch (ex: Exception) {
-            log.warn("Scryfall search failed for '$query': ${ex.message}")
+            log.warn("Scryfall search failed for '$query'", ex)
             emptyList()
         }
     }
@@ -40,7 +40,7 @@ class ScryfallClient(
                 .retrieve()
                 .body<ScryfallCard>()
         } catch (ex: Exception) {
-            log.warn("Could not find card '$name': ${ex.message}")
+            log.warn("Could not find card '$name'", ex)
             null
         }
     }
